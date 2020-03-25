@@ -13,8 +13,9 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= link_to user.name, "#" %></td>
-        <td>
+        <td class="center">
           <% if current_user.admin? && !current_user?(user) %>
+            <%= link_to "基本情報編集", "#", remote: true, class: "btn btn-success" %>
             <%= link_to "削除", user, method: :delete,
                 data: {confirm: "削除してもよろしいですか？"},
                 class: "btn btn-danger" %>
