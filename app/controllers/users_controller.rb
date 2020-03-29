@@ -10,8 +10,7 @@ class UsersController < ApplicationController
   end
   
   def show
-    @first_day = Date.current.beginning_of_month
-    @last_day = @first_day.end_of_month
+    @worked_sum = @attendances.where.not(started_at: nil).count
   end
   
   def new
@@ -23,7 +22,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in @user
       flash[:success] = "新規ユーザー作成に成功しました。"
-      redirect_to "#"
+      redirect_to @user
     else
       render :new
     end
@@ -35,7 +34,7 @@ class UsersController < ApplicationController
   def update
     if @user.update_attributes(user_params)
       flash[:success] = "ユーザー情報を編集しました。"
-      redirect_to "#"
+      redirect_to @user
     else
       render :edit
     end
