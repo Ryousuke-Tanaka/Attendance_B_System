@@ -12,6 +12,14 @@
 	margin-bottom: 10px;
 }
 
+/* ユーザー検索フォーム */
+
+#search-users {
+  p {
+    font-weight: bold;
+  }
+}
+
 /* ユーザー勤怠情報テーブル */
 
 #table-attendances {
@@ -61,4 +69,3 @@
   margin: 15px 0;
   width: 30%;
 }
-
