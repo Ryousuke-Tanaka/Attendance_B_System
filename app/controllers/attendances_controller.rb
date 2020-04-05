@@ -9,7 +9,7 @@ class AttendancesController < ApplicationController
   def update
     @user = User.find(params[:user_id])
     @attendance = Attendance.find(params[:id])
-    # 出勤時間が未登録であることを判定します。
+    # 出勤時間が未登録であることを判定
     if @attendance.started_at.nil?
       if @attendance.update_attributes(started_at: Time.current.change(sec: 0))
         flash[:info] = "おはようございます！"
@@ -44,20 +44,8 @@ class AttendancesController < ApplicationController
   end
   
   private
-    # 1ヶ月分の勤怠情報を扱います。
+    # 1ヶ月分の勤怠情報を扱う
     def attendances_params
       params.require(:user).permit(attendances: [:started_at, :finished_at, :note])[:attendances]
     end
-    
-    # beforeフィルター
-    
-    # 管理権限者、または現在ログインしているユーザーを許可します。
-    def admin_or_correct_user
-      @user = User.find(params[:user_id]) if @user.blank?
-      unless current_user?(@user) || current_user.admin?
-        flash[:danger] = "編集権限がありません。"
-        redirect_to(root_url)
-      end
-    end
-  
 end

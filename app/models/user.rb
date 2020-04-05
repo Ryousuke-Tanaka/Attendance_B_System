@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_many :attendances, dependent: :destroy
-  # 「remember_token」という仮想の属性を作成します。
+  # 「remember_token」という仮想の属性を作成
   attr_accessor :remember_token
   before_save { self.email = email.downcase }
   
@@ -18,7 +18,7 @@ class User < ApplicationRecord
   
   
   
-  # 渡された文字列のハッシュ値を返します。
+  # 渡された文字列のハッシュ値を返す
   def User.digest(string)
     cost = 
       if ActiveModel::SecurePassword.min_cost
@@ -29,24 +29,24 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
   
-  # ランダムなトークンを返します。
+  # ランダムなトークンを返す
   def User.new_token
     SecureRandom.urlsafe_base64
   end
  
-  # 永続セッションのためハッシュ化したトークンをデータベースに記憶します。
+  # 永続セッションのためハッシュ化したトークンをデータベースに記憶
   def remember
     self.remember_token = User.new_token
     update_attribute(:remember_digest, User.digest(remember_token))
   end
   
-  # トークンがダイジェストと一致すればtrueを返します。
+  # トークンがダイジェストと一致すればtrueを返す
   def authenticated?(remember_token)
     return false if remember_digest.nil?
     BCrypt::Password.new(remember_token).is_password?(remember_token)
   end
   
-  # ユーザーのログイン情報を破棄します。
+  # ユーザーのログイン情報を破棄
   def forget
     update_attribute(:remember_digest, nil)
   end

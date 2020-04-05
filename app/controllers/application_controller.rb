@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   # beforeフィルター
   
-  # paramsハッシュからユーザーを取得します。
+  # paramsハッシュからユーザーを取得
   def set_user
     @user = User.find(params[:id])
   end
@@ -22,16 +22,30 @@ class ApplicationController < ActionController::Base
     
   # アクセスしたユーザーが現在ログインしているユーザーか確認
   def correct_user
-    @user = User.find(params[:id])
-    redirect_to(root_url) unless @user == current_user
-  end
-    
-  # 管理者か判定
-  def admin_user
-    redirect_to root_url unless current_user.admin?
+    unless current_user?(@user)
+      flash[:danger] = "他のユーザー情報は閲覧できません。"
+      redirect_to(root_url)
+    end
   end
   
-  # ページ出力前に1ヶ月分のデータの存在を確認・セットします。
+  # 管理権限者、または現在ログインしているユーザーを許可
+  def admin_or_correct_user
+    @user = User.find(params[:user_id]) if @user.blank?
+    unless current_user?(@user) || current_user.admin?
+      flash[:danger] = "閲覧・編集権限がありません。"
+      redirect_to(root_url)
+    end
+  end
+
+  # 管理者か判定
+  def admin_user
+    unless current_user.admin?
+      flash[:danger] = "管理者のみ閲覧可能です。"
+      redirect_to root_url
+    end
+  end
+  
+  # ページ出力前に1ヶ月分のデータの存在を確認・セット
   def set_one_month 
     @first_day = params[:date].nil? ?
     Date.current.beginning_of_month : params[:date].to_date
