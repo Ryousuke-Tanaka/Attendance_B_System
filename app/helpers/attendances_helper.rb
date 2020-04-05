@@ -15,7 +15,7 @@ module AttendancesHelper
     format("%.2f",(((finish - start) / 60) / 60.0))
   end
   
-  # 時間を15分刻みで表示する
+  # 時間を15分刻みで表示
   def set_minutes(time)
     format("%.2d", time.floor_to(15.minutes).min)
   end
