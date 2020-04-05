@@ -18,7 +18,7 @@ gem 'jbuilder',     '2.6.4'
 
 group :development, :test do
   gem 'sqlite3',      '1.3.13'
-  gem 'byebug', '9.0.6', platform: :mri
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :development do
@@ -26,6 +26,10 @@ group :development do
   gem 'listen',                '3.1.5'
   gem 'spring',                '2.0.2'
   gem 'spring-watcher-listen', '2.0.1'
+end
+
+group :production do
+  gem 'pg', '0.20.0'
 end
 
 # Windows環境では、このgemを含める必要があります。（mac環境でもこのままで問題ありません）
